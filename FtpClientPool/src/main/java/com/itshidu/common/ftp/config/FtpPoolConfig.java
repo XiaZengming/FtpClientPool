@@ -5,9 +5,7 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 /**
  * ftp配置参数对象   继承自GenericObjectPoolConfig 
- * 
  * @author 夏增明
- *
  */
 public class FtpPoolConfig extends GenericObjectPoolConfig{
     

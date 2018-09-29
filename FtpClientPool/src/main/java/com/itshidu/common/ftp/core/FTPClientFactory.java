@@ -14,7 +14,6 @@ import com.itshidu.common.ftp.config.FtpPoolConfig;
 /**
  * ftpclient 工厂
  * @author 夏增明
- *
  */
 public class FTPClientFactory extends BasePooledObjectFactory<FTPClient> {
 	
