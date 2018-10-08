@@ -1,6 +1,8 @@
 package com.itshidu.common.ftp.client;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -44,6 +46,18 @@ public class FtpClientUtils {
 		}
 	}
 	/**
+	 * 上传文件到FTP工作目录
+	 * @param client (FTPClient对象)
+	 * @param in (要上传的输入流)
+	 * @param path (在工作目录中的路径，示例"/data/2018")
+	 * @param filename (文件名，示例"default.jpg")
+	 * @throws IOException (IO异常)
+	 */
+	public void store(FTPClient client,File localFile,String path,String filename) throws IOException {
+		InputStream in = new FileInputStream(localFile);
+		store(client, in, path, filename);
+	}
+	/**
 	 * 上传文件到FTP工作目录，path示例"/data/2018"，filename示例"default.jpg"
 	 * @param client (FTPClient对象)
 	 * @param in (要上传的输入流)
@@ -80,6 +94,16 @@ public class FtpClientUtils {
 			logger.error("删除文件失败",e);
 			throw e;
 		}
+	}
+	/**
+	 * 从FTP工作目录下载remote文件
+	 * @param client (FTP)
+	 * @param remote (FTP文件路径，示例"/data/2018/default.jpg")
+	 * @param local (保存到本地的位置)
+	 * @throws Exception
+	 */
+	public void retrieve(FTPClient client,String remote,File local) throws Exception{
+		retrieve(client, remote, new FileOutputStream(local));
 	}
 	/**
      * 从FTP工作目录下载remote文件
