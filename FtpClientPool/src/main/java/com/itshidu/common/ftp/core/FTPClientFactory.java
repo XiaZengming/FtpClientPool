@@ -21,7 +21,6 @@ public class FTPClientFactory extends BasePooledObjectFactory<FTPClient> {
     
     private FtpPoolConfig ftpPoolConfig;
     
-    private FTPClientFactory() { }
     public FTPClientFactory(FtpPoolConfig config) {
     	this.ftpPoolConfig=config;
     }
@@ -34,9 +33,7 @@ public class FTPClientFactory extends BasePooledObjectFactory<FTPClient> {
 		this.ftpPoolConfig = ftpPoolConfig;
 	}
 
-	/**
-     * 新建对象
-     */
+	//新建对象
     @Override
     public FTPClient create() throws Exception {
         FTPClient ftpClient = new FTPClient();
@@ -79,9 +76,7 @@ public class FTPClientFactory extends BasePooledObjectFactory<FTPClient> {
         return new DefaultPooledObject<FTPClient>(ftpClient);
     }
 
-    /**
-     * 销毁对象
-     */
+    //销毁对象
     @Override
     public void destroyObject(PooledObject<FTPClient> p) throws Exception {
         FTPClient ftpClient = p.getObject();

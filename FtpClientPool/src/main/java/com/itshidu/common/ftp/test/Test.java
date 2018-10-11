@@ -16,7 +16,7 @@ public class Test {
 	public static void main(String[] args) throws Exception {
 		//配置信息
 		FtpPoolConfig cfg = new FtpPoolConfig();
-		cfg.setHost("192.168.61.110");
+		cfg.setHost("192.168.6.80");
 		cfg.setPort(21);
 		cfg.setUsername("ftpuser");
 		cfg.setPassword("123456");
@@ -26,13 +26,16 @@ public class Test {
 		FtpClientUtils util = new FtpClientUtils(); //工具对象
 
 		FTPClient c = pool.borrowObject();//从池子中借一个FTPClient对象
-		util.mkdirs(c, "/data/imgs"); //在FTP的工作目录下创建多层目录
+		int t1=util.mkdirs(c, "/data/imgs"); //在FTP的工作目录下创建多层目录
 		InputStream in = new FileInputStream("D:/001.jpg"); //读取一个本地文件
-		util.store(c, in, "/data/imgs/2018/09/29", "main.jpg");//上传到FTP服务器
-		util.retrieve(c, "/data/imgs/2018/09/29/main.jpg", new FileOutputStream("F:/002.jpg"));//从FTP服务器取回文件
+		int t2=util.store(c, in, "/data/imgs/2018/09/29", "main.jpg");//上传到FTP服务器
+		int t3=util.retrieve(c, "/data/imgs/2018/09/29/main.jpg", new FileOutputStream("F:/002.jpg"));//从FTP服务器取回文件
 		util.delete(c, "/data/imgs/2018/09/29/main.jpg"); //删除FTP服务器中的文件
 		pool.returnObject(c);//把对象归还给池子
 		
+		System.out.println("目录耗时："+t1);
+		System.out.println("上传耗时："+t2);
+		System.out.println("下载耗时："+t3);
 	}
 
 }

@@ -26,8 +26,10 @@ public class FtpClientUtils {
 	 * @param client (FTPClient对象)
 	 * @param path (路径分隔符使用"/"，且以"/"开头，例如"/data/photo/2018")
 	 * @throws IOException (IO异常)
+	 * @return (耗时多少毫秒)
 	 */
-	public static void mkdirs(FTPClient client,String path) throws IOException {
+	public int mkdirs(FTPClient client,String path) throws IOException {
+		long start = System.currentTimeMillis();
 		if(path.contains("\\")) {
 			throw new RuntimeException("'\\' is not allowed in the path,please use '/'");
 		}
@@ -44,18 +46,21 @@ public class FtpClientUtils {
 		for(String name:names) {
 			client.makeDirectory(name);
 		}
+		return (int) (System.currentTimeMillis()-start);
 	}
+
 	/**
 	 * 上传文件到FTP工作目录
 	 * @param client (FTPClient对象)
-	 * @param in (要上传的输入流)
+	 * @param localFile (上传的文件)
 	 * @param path (在工作目录中的路径，示例"/data/2018")
 	 * @param filename (文件名，示例"default.jpg")
 	 * @throws IOException (IO异常)
+	 * @return (耗时多少毫秒)
 	 */
-	public void store(FTPClient client,File localFile,String path,String filename) throws IOException {
+	public int store(FTPClient client,File localFile,String path,String filename) throws IOException {
 		InputStream in = new FileInputStream(localFile);
-		store(client, in, path, filename);
+		return store(client, in, path, filename);
 	}
 	/**
 	 * 上传文件到FTP工作目录，path示例"/data/2018"，filename示例"default.jpg"
@@ -64,21 +69,23 @@ public class FtpClientUtils {
 	 * @param path (在工作目录中的路径，示例"/data/2018")
 	 * @param filename (文件名，示例"default.jpg")
 	 * @throws IOException (IO异常)
+	 * @return (耗时多少毫秒)
 	 */
-	public void store(FTPClient client,InputStream in,String path,String filename) throws IOException {
+	public int store(FTPClient client,InputStream in,String path,String filename) throws IOException {
 		if(path.contains("\\")) {
 			throw new RuntimeException("'\\' is not allowed in the path,please use '/'");
 		}
 		if(!path.startsWith("/")) {
 			throw new RuntimeException("please start with '/'");
 		}
+		long start = System.currentTimeMillis();
 		synchronized (client) {
-			System.out.println("::"+path);
 	        mkdirs(client, path);
 	        client.changeWorkingDirectory(path);
 	        client.setFileType(FTP.BINARY_FILE_TYPE);
 	        client.storeFile(filename, in);
 		}
+		return (int) (System.currentTimeMillis()-start);
 	}
 	/**
 	 * 删除FTP工作目录中的指定文件
@@ -101,28 +108,29 @@ public class FtpClientUtils {
 	 * @param remote (FTP文件路径，示例"/data/2018/default.jpg")
 	 * @param local (保存到本地的位置)
 	 * @throws Exception
+	 * @return (耗时多少毫秒)
 	 */
-	public void retrieve(FTPClient client,String remote,File local) throws Exception{
-		retrieve(client, remote, new FileOutputStream(local));
+	public int retrieve(FTPClient client,String remote,File local) throws Exception{
+		return retrieve(client, remote, new FileOutputStream(local));
 	}
 	/**
      * 从FTP工作目录下载remote文件
      * @param remote  (文件路径，示例"/data/2018/default.jpg")
      * @param out (输出流)
      * @throws Exception (异常)
+     * @return (耗时多少毫秒)
      */
-	public void retrieve(FTPClient client,String remote,OutputStream out) throws Exception  {
+	public int retrieve(FTPClient client,String remote,OutputStream out) throws Exception  {
 		InputStream in =null;
 	    try {
 	    	  long start =System.currentTimeMillis();
 	    	  in=client.retrieveFileStream(remote);
-	    	  long end =System.currentTimeMillis();
-	    	  logger.info("ftp下载耗时(毫秒):"+(end-start));
 	    	  if(in != null){
 	    		  byte[] buffer = new byte[1024];
 	    		  for(int len;(len=in.read(buffer))!=-1;) {
 	    			  out.write(buffer,0,len);
 	    		  }
+	    		  return (int)(System.currentTimeMillis()-start);
 	    	  }else{
 	    		  throw new RuntimeException("FTP Client retrieve Faild.");
 	    	  }
