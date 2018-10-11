@@ -89,7 +89,7 @@ public class FtpClientUtils {
 	}
 	/**
 	 * 删除FTP工作目录中的指定文件
-	 * @param client
+	 * @param client (FTPClient对象)
 	 * @param pathname (文件路径，示例"/data/2018/default.jpg")
 	 * @return (删除成功返回true，删除失败返回false)
 	 * @throws Exception (IO异常)
@@ -104,7 +104,7 @@ public class FtpClientUtils {
 	}
 	/**
 	 * 从FTP工作目录下载remote文件
-	 * @param client (FTP)
+	 * @param client (FTPClient对象)
 	 * @param remote (FTP文件路径，示例"/data/2018/default.jpg")
 	 * @param local (保存到本地的位置)
 	 * @throws Exception
