@@ -27,12 +27,15 @@ public class FtpClientUtils {
 		this.pool=pool;
 	}
 	
+	public void setPool(FTPClientPool pool) {
+		this.pool = pool;
+	}
+
 	/**
 	 * 在FTP的工作目录下创建多层目录
-	 * @param client (FTPClient对象)
 	 * @param path (路径分隔符使用"/"，且以"/"开头，例如"/data/photo/2018")
 	 * @return (耗时多少毫秒)
-	 * @throws Exception 
+	 * @throws Exception (异常)
 	 */
 	public int mkdirs(String path) throws Exception {
 		FTPClient client = null;
@@ -61,12 +64,11 @@ public class FtpClientUtils {
 
 	/**
 	 * 上传文件到FTP工作目录
-	 * @param client (FTPClient对象)
 	 * @param localFile (上传的文件)
 	 * @param path (在工作目录中的路径，示例"/data/2018")
 	 * @param filename (文件名，示例"default.jpg")
 	 * @return (耗时多少毫秒)
-	 * @throws Exception 
+	 * @throws Exception (异常)
 	 */
 	public int store(File localFile,String path,String filename) throws Exception {
 		InputStream in = new FileInputStream(localFile);
@@ -74,12 +76,11 @@ public class FtpClientUtils {
 	}
 	/**
 	 * 上传文件到FTP工作目录，path示例"/data/2018"，filename示例"default.jpg"
-	 * @param client (FTPClient对象)
 	 * @param in (要上传的输入流)
 	 * @param path (在工作目录中的路径，示例"/data/2018")
 	 * @param filename (文件名，示例"default.jpg")
 	 * @return (耗时多少毫秒)
-	 * @throws Exception 
+	 * @throws Exception (异常)
 	 */
 	public int store(InputStream in,String path,String filename) throws Exception {
 		FTPClient client = null;
@@ -103,7 +104,6 @@ public class FtpClientUtils {
 	}
 	/**
 	 * 删除FTP工作目录中的指定文件
-	 * @param client (FTPClient对象)
 	 * @param pathname (文件路径，示例"/data/2018/default.jpg")
 	 * @return (删除成功返回true，删除失败返回false)
 	 * @throws Exception (IO异常)
@@ -122,10 +122,9 @@ public class FtpClientUtils {
 	}
 	/**
 	 * 从FTP工作目录下载remote文件
-	 * @param client (FTPClient对象)
 	 * @param remote (FTP文件路径，示例"/data/2018/default.jpg")
 	 * @param local (保存到本地的位置)
-	 * @throws Exception
+	 * @throws Exception (异常)
 	 * @return (耗时多少毫秒)
 	 */
 	public int retrieve(String remote,File local) throws Exception{
@@ -172,4 +171,5 @@ public class FtpClientUtils {
 			throw new RuntimeException("please start with '/'");
 		}
 	}
+	
 }
