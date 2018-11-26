@@ -90,7 +90,7 @@ public class FtpClientUtils {
 			long start = System.currentTimeMillis();
 			synchronized (client) {
 		        mkdirs(path);
-		        client.changeWorkingDirectory(path);
+		        client.changeWorkingDirectory(client.printWorkingDirectory()+path);
 		        client.setFileType(FTP.BINARY_FILE_TYPE);
 		        client.storeFile(filename, in);
 			}

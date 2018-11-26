@@ -14,7 +14,7 @@
 	<name>FtpClientPool</name>
 	<description>A powerful, easy-to-use FTP Client pool.</description>
 	<url>https://github.com/XiaZengming/FtpClientPool</url>
-	<version>1.0.3</version>
+	<version>1.0.4</version>
 	<packaging>jar</packaging>
 
 
