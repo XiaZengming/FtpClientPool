@@ -84,13 +84,14 @@ public class FtpClientUtils {
 	 */
 	public int store(InputStream in,String path,String filename) throws Exception {
 		FTPClient client = null;
+		String workDirectory = client.printWorkingDirectory();
 		try {
 			client=pool.borrowObject();
 			checkPath(path);
 			long start = System.currentTimeMillis();
 			synchronized (client) {
 		        mkdirs(path);
-		        client.changeWorkingDirectory(client.printWorkingDirectory()+path);
+		        client.changeWorkingDirectory(workDirectory+path);
 		        client.setFileType(FTP.BINARY_FILE_TYPE);
 		        client.storeFile(filename, in);
 			}
@@ -98,7 +99,10 @@ public class FtpClientUtils {
 		} catch (IOException e) {
 			throw e;
 		}finally {
-			if(client!=null)pool.returnObject(client);
+			if(client!=null) {
+				client.changeWorkingDirectory(workDirectory);
+				pool.returnObject(client);
+			}
 		}
 		
 	}
