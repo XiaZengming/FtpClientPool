@@ -36,6 +36,15 @@ public class Test {
 		System.out.println("目录耗时："+t1);
 		System.out.println("上传耗时："+t2);
 		System.out.println("下载耗时："+t3);
+		
+		/*
+		FtpClientUtils ftp = new FtpClientUtils(pool);
+		ftp.store(localFile, path, filename);
+		ftp.store(inputstream, path, filename);
+		ftp.retrieve(remote, local);
+		ftp.retrieve(remote, outputstream);
+		ftp.delete("/demo/1.jpg");
+		*/
 	}
 
 }
