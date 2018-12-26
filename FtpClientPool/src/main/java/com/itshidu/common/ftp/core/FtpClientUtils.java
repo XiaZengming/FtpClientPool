@@ -39,12 +39,13 @@ public class FtpClientUtils {
 	 */
 	public int mkdirs(String path) throws Exception {
 		FTPClient client = null;
+		String workDirectory = null;
 		try {
 			client = pool.borrowObject();
 			long start = System.currentTimeMillis();
 			checkPath(path);
-			String workingDirectory = client.printWorkingDirectory();
-			File f = new File(workingDirectory+path);
+			workDirectory = client.printWorkingDirectory();
+			File f = new File(workDirectory+path);
 			List<String> names = new LinkedList<String>();
 			while(f!=null&&f.toString().length()>0) {
 				names.add(0, f.toString().replaceAll("\\\\", "/"));
@@ -57,7 +58,10 @@ public class FtpClientUtils {
 		} catch (Exception e) {
 			throw e;
 		}finally {
-			if(client!=null)pool.returnObject(client);
+			if(client!=null) {
+				client.changeWorkingDirectory(workDirectory);
+				pool.returnObject(client);
+			}
 		}
 		
 	}
@@ -84,9 +88,10 @@ public class FtpClientUtils {
 	 */
 	public int store(InputStream in,String path,String filename) throws Exception {
 		FTPClient client = null;
-		String workDirectory = client.printWorkingDirectory();
+		String workDirectory = null;
 		try {
 			client=pool.borrowObject();
+			workDirectory = client.printWorkingDirectory();
 			checkPath(path);
 			long start = System.currentTimeMillis();
 			synchronized (client) {
@@ -172,7 +177,10 @@ public class FtpClientUtils {
 			throw new RuntimeException("'\\' is not allowed in the path,please use '/'");
 		}
 		if(!path.startsWith("/")) {
-			throw new RuntimeException("please start with '/'");
+			throw new RuntimeException("Please start with '/'");
+		}
+		if(!path.endsWith("/")) {
+			throw new RuntimeException("Don't end with '/'");
 		}
 	}
 	
