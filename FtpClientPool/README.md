@@ -1,16 +1,44 @@
 # FtpClientPool
 这是一个FTP客户端连接池，底层依赖apache的commons-net和commons-pool2，基于这二者做的个薄层封装，让我们可以在项目中以更简洁、高效的方式使用FtpClient。
 
+
+
+# 核心代码
+
+```java
+
+FtpPoolConfig config=new FtpPoolConfig();
+config.setHost("你的服务器");
+config.setPort(21);
+config.setUsername("FTP账号");
+config.setPassword("FTP密码");
+FTPClientFactory clientFactory=new FTPClientFactory(config);
+FTPClientPool pool = new FTPClientPool(clientFactory);
+FtpClientUtils ftp = new FtpClientUtils(pool);
+
+//常用API，在Eclipse中鼠标放到方法名上可以看到详细注释说明
+ftp.store(localFile, path, filename);		//上传文件到FTP服务器
+ftp.store(inputstream, path, filename);		//上传inputstream到FTP服务器
+ftp.retrieve(remote, local);				//从FTP服务端下载文件到本地
+ftp.retrieve(remote, outputstream);			//从FTP服务器获取输出流
+ftp.delete("/demo/1.jpg");					//从FTP服务器删除文件
+```
+
+# 下面都是扩展说明，万变不离其宗~！！！
+
+
+--------
 # 如何使用
+
 1、下载jar包 ftpClientPool-xx.jar(我用maven编译好的jar包)到你的工程lib中，或者下载此项目源码后在本地编译亦可。
-     
+​     
 2、在你的spring主配置文件中引入spring-ftpClientPool.xml配置文件
-	    示例如下：   
-      
+​	    示例如下：   
+​      
 	 <import resource="classpath:spring-ftpClientPool.xml"/>
-   
+
    spring-ftpClientPool.xml 配置如下：
-   
+
    ```
    <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -72,13 +100,13 @@
       </bean>
      
 </beans>
- ```
+   ```
+
   
-  
- 
+
 3、在你的 spring主配置文件中新载入一个ftpPoolConfig.properties配置
-	    示例如下：
-      
+​	    示例如下：
+​      
 	   <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
 		  <property name="locations"> 
 		    <list> 
@@ -144,7 +172,7 @@ ftp.testWhileIdle=true
 	    示例1:           
 	    @Resource  
 	    private  FTPClientHelper  ftpClientHelper ;// 注入ftp客户端helper对象使用
-      
+	  
 	  示例2:    
 	    @Resource
 	    private   FTPClientPool  ftpClientPool;// 注入 ftp客户端连接池对象使用
