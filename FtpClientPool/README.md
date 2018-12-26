@@ -102,7 +102,7 @@ ftp.delete("/demo/1.jpg");					//从FTP服务器删除文件
 </beans>
    ```
 
-  
+ 
 
 3、在你的 spring主配置文件中新载入一个ftpPoolConfig.properties配置
 ​	    示例如下：
